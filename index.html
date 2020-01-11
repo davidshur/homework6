@@ -15,14 +15,46 @@
     href='style.css' />
 </head>
 <body>
-  <div class="jumbotron">
-    <h1 class="display-4">Weather App</h1>
-    <p class="lead">Check out the weather!</p>
-    <hr class="my-4">
-    <p>Simply enter a city into the search bar below and hit enter to get started.</p>
+  <div class='container'>
+    <div class="jumbotron">
+      <h4 class="display-4 text-center">Weather Dashboard</h4>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <div class='card' id='sidebar'>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="City name here!" aria-label="City" aria-describedby="basic-addon1">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+          </div>
+          <div class='btn-group-vertical'>
+            <button type='button' class='btn btn-secondary'>Seattle</button>
+            <button type='button' class='btn btn-secondary'>Redmond</button>
+            <button type='button' class='btn btn-secondary'>Maui</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class='card mb-3'>
+          <div class='card-header text-white bg-secondary'>Today's Weather</div>
+          <div class='card-body'>
+            <p class='card-title'></p>
+            <div class='card-text'>
+
+            </div>
+          </div>
+        </div>
+        <div class='card'>
+          <div class='card-header text-white bg-secondary'>5 Day Forecast</div>
+          <div class='card-body'>
+            <div class='card-title'></div>
+            <div class='card-text'></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-
 
   <script
     src="https://code.jquery.com/jquery-3.4.1.js"
