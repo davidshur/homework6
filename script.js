@@ -29,7 +29,23 @@ $(document).ready(() => {
       url: url,
       method: 'GET'
     }).then((response) => {
-      console.log(response);
+      // Get the date
+      const d = new Date();
+      const day = d.getDate();
+      const month = d.getMonth() + 1;
+      const year = d.getFullYear();
+      const todaysDate = month + '/' + day + '/' + year;
+
+      // Get all data needed from response
+      const cityName = response.name;
+      const country = response.sys.country;
+      const weather = response.weather[0].main;
+      const temp = response.main.temp;
+      const humidity = response.main.humidity;
+      const wind = response.wind.speed;
+
+      // Append data elements to card
+
     });
   });
 
