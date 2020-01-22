@@ -1,6 +1,8 @@
 $(document).ready(() => {
   const cities = [];
 
+  const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
+
   const createButtons = () => {
     for (let i = 0; i < cities.length; i++) {
       const cityButton = $('<button>');
@@ -12,17 +14,25 @@ $(document).ready(() => {
   }
 
   $('#search').on('click', event => {
+    const citySearch = $('.form-control').val();
+    const confirmCityURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearch + '&appid=' + apikey;
+
     event.preventDefault();
-    $('.btn-group-vertical').empty();
-    cities.push($('.form-control').val());
-    $('.form-control').val('');
-    createButtons();
+
+    $.ajax({
+      url: confirmCityURL,
+      method: 'GET'
+    }).then(response => {
+      cities.push(response.name);
+      $('.form-control').val('')
+      $('.btn-group-vertical').empty();
+      createButtons();
+    });
   });
 
   $('.btn-group-vertical').on('click', function(event) {
     const city = $(event.target).data('city');
 
-    const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
     const currentWeatherURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apikey;
 
     $.ajax({
@@ -43,9 +53,9 @@ $(document).ready(() => {
       const weatherIcon = $('<img>');
       const weatherIconURL = 'https://openweathermap.org/img/w/' + response.weather[0].icon + '.png';
       weatherIcon.attr('src', weatherIconURL);
-      const temp = $('<li>').text('Temperature: ' + response.main.temp + 'K');
-      const humidity = $('<li>').text('Humidity: ' + response.main.humidity + '%');
-      const wind = $('<li>').text('Wind Speed: ' + response.wind.speed + 'MPH');
+      const temp = $('<li>').text('Temperature: ' + response.main.temp + ' K');
+      const humidity = $('<li>').text('Humidity: ' + response.main.humidity + ' %');
+      const wind = $('<li>').text('Wind Speed: ' + response.wind.speed + ' MPH');
 
       // Get UVI
       const lat = response.coord.lat;
