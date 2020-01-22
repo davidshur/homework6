@@ -23,12 +23,13 @@ $(document).ready(() => {
     const city = $(event.target).data('city');
 
     const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
-    const url = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apikey;
+    const currentWeatherURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apikey;
 
     $.ajax({
-      url: url,
+      url: currentWeatherURL,
       method: 'GET'
-    }).then((response) => {
+    }).then(response => {
+
       // Get the date
       const d = new Date();
       const day = d.getDate();
@@ -39,13 +40,29 @@ $(document).ready(() => {
       // Get all data needed from response
       const cityName = response.name;
       const country = response.sys.country;
-      const weather = response.weather[0].main;
-      const temp = response.main.temp;
-      const humidity = response.main.humidity;
-      const wind = response.wind.speed;
+      const weatherIcon = $('<img>');
+      const weatherIconURL = 'https://openweathermap.org/img/w/' + response.weather[0].icon + '.png';
+      weatherIcon.attr('src', weatherIconURL);
+      const temp = $('<li>').text('Temperature: ' + response.main.temp + 'K');
+      const humidity = $('<li>').text('Humidity: ' + response.main.humidity + '%');
+      const wind = $('<li>').text('Wind Speed: ' + response.wind.speed + 'MPH');
 
-      // Append data elements to card
+      // Get UVI
+      const lat = response.coord.lat;
+      const lon = response.coord.lon;
+      const uviURL = 'http://api.openweathermap.org/data/2.5/uvi?appid=' + apikey + '&lat=' + lat + '&lon=' + lon;
 
+      $.ajax({
+        url: uviURL,
+        method: 'GET'
+      }).then(response => {
+        const uvi = $('<li>').text('UV Index: ' + response.value);
+
+        // Append data elements to card
+        $('#weather-title').text(cityName + ', ' + country + ' ');
+        $('#weather-title').append(weatherIcon);
+        $('#weather-list').append(temp, humidity, wind, uvi);
+      });
     });
   });
 
