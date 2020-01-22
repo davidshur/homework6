@@ -50,7 +50,7 @@ $(document).ready(() => {
       // Get UVI
       const lat = response.coord.lat;
       const lon = response.coord.lon;
-      const uviURL = 'http://api.openweathermap.org/data/2.5/uvi?appid=' + apikey + '&lat=' + lat + '&lon=' + lon;
+      const uviURL = 'https://api.openweathermap.org/data/2.5/uvi?appid=' + apikey + '&lat=' + lat + '&lon=' + lon;
 
       $.ajax({
         url: uviURL,
@@ -59,8 +59,9 @@ $(document).ready(() => {
         const uvi = $('<li>').text('UV Index: ' + response.value);
 
         // Append data elements to card
-        $('#weather-title').text(cityName + ', ' + country + ' ');
+        $('#weather-title').text(cityName + ', ' + country + ' (' + todaysDate + ') ');
         $('#weather-title').append(weatherIcon);
+        $('#weather-list').empty();
         $('#weather-list').append(temp, humidity, wind, uvi);
       });
     });
