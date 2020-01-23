@@ -87,20 +87,14 @@ $(document).ready(() => {
       url: fiveDayURL,
       method: 'GET'
     }).then(response => {
-      console.log(response);
-
       for (let i = 0; i < 5; i++) {
-        const forecastDate = $('<p>').text(response.list[i][7]);
-        console.log(forecastDate);
         const forecastIcon = $('<img>');
         const forecastIconURL = 'https://openweathermap.org/img/w/' + response.list[i].weather[0].icon + '.png';
         forecastIcon.attr('src', forecastIconURL);
         forecastIcon.attr('alt', response.list[i].weather[0].main);
         const forecastTemp = $('<p>').text('Temperature: ' + ktof(response.list[i].main.temp) + ' F');
         const forecastHumidity = $('<p>').text('Humidity: ' + response.list[i].main.humidity + ' %');
-
         const currentForecastCard = '#' + i;
-
         $(currentForecastCard).append(forecastIcon, forecastTemp, forecastHumidity);
       }
     });
