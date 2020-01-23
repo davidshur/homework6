@@ -1,9 +1,11 @@
 $(document).ready(() => {
-  const cities = [];
+  let cities = [];
+  cities = JSON.parse(localStorage.getItem('cities'));
 
   const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
 
   const createButtons = () => {
+    $('.btn-group-vertical').empty();
     for (let i = 0; i < cities.length; i++) {
       const cityButton = $('<button>');
       cityButton.text(cities[i]);
@@ -28,15 +30,14 @@ $(document).ready(() => {
       method: 'GET'
     }).then(response => {
       cities.push(response.name);
+      localStorage.setItem('cities', JSON.stringify(cities));
       $('.form-control').val('')
-      $('.btn-group-vertical').empty();
       createButtons();
     });
   });
 
   $('.btn-group-vertical').on('click', function(event) {
     const city = $(event.target).data('city');
-
     const currentWeatherURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apikey;
 
     $.ajax({
@@ -99,6 +100,12 @@ $(document).ready(() => {
         $(currentForecastCard).append(forecastIcon, forecastTemp, forecastHumidity);
       }
     });
+  });
+
+  $('#clear').on('click', () => {
+    cities = [];
+    localStorage.setItem('cities', JSON.stringify(cities));
+    createButtons();
   });
 
   createButtons();
