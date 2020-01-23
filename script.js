@@ -13,6 +13,10 @@ $(document).ready(() => {
     }
   }
 
+  const ktof = k => {
+    return Math.floor(( k - 273.15 ) * 9 / 5 + 32);
+  }
+
   $('#search').on('click', event => {
     const citySearch = $('.form-control').val();
     const confirmCityURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearch + '&appid=' + apikey;
@@ -54,7 +58,7 @@ $(document).ready(() => {
       const weatherIconURL = 'https://openweathermap.org/img/w/' + response.weather[0].icon + '.png';
       weatherIcon.attr('src', weatherIconURL);
       weatherIcon.attr('alt', response.weather[0].main);
-      const temp = $('<li>').text('Temperature: ' + response.main.temp + ' K');
+      const temp = $('<li>').text('Temperature: ' + ktof(response.main.temp) + ' K');
       const humidity = $('<li>').text('Humidity: ' + response.main.humidity + ' %');
       const wind = $('<li>').text('Wind Speed: ' + response.wind.speed + ' MPH');
 
@@ -92,7 +96,7 @@ $(document).ready(() => {
         const forecastIconURL = 'https://openweathermap.org/img/w/' + response.list[i].weather[0].icon + '.png';
         forecastIcon.attr('src', forecastIconURL);
         forecastIcon.attr('alt', response.list[i].weather[0].main);
-        const forecastTemp = $('<p>').text('Temperature: ' + response.list[i].main.temp + ' K');
+        const forecastTemp = $('<p>').text('Temperature: ' + ktof(response.list[i].main.temp) + ' F');
         const forecastHumidity = $('<p>').text('Humidity: ' + response.list[i].main.humidity + ' %');
 
         const currentForecastCard = '#' + i;
