@@ -56,11 +56,12 @@ $(document).ready(() => {
       const country = response.sys.country;
       const weatherIcon = $('<img>');
       const weatherIconURL = 'https://openweathermap.org/img/w/' + response.weather[0].icon + '.png';
-      weatherIcon.attr('src', weatherIconURL);
-      weatherIcon.attr('alt', response.weather[0].main);
       const temp = $('<li>').text('Temperature: ' + ktof(response.main.temp) + ' K');
       const humidity = $('<li>').text('Humidity: ' + response.main.humidity + ' %');
       const wind = $('<li>').text('Wind Speed: ' + response.wind.speed + ' MPH');
+
+      weatherIcon.attr('src', weatherIconURL);
+      weatherIcon.attr('alt', response.weather[0].main);
 
       // Get UVI
       const lat = response.coord.lat;
