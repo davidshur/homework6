@@ -1,7 +1,15 @@
 $(document).ready(() => {
-  let cities = [];
-  cities = JSON.parse(localStorage.getItem('cities'));
-  let lastCity = localStorage.getItem('last');
+  let citiesArray = JSON.parse(localStorage.getItem('citiesArray'));
+
+  if (citiesArray === null) {
+    citiesArray = ['Seattle'];
+  }
+
+  let lastCity = localStorage.getItem('lastCity');
+
+  if (lastCity === null) {
+    lastCity = 'Seattle';
+  }
 
   const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
 
@@ -11,10 +19,10 @@ $(document).ready(() => {
 
   const createButtons = () => {
     $('.btn-group-vertical').empty();
-    for (let i = 0; i < cities.length; i++) {
+    for (let i = 0; i < citiesArray.length; i++) {
       const cityButton = $('<button>');
-      cityButton.text(cities[i]);
-      cityButton.attr('data-city', cities[i]);
+      cityButton.text(citiesArray[i]);
+      cityButton.attr('data-city', citiesArray[i]);
       cityButton.addClass('btn btn-secondary text-white city-button');
       $('.btn-group-vertical').append(cityButton);
     }
@@ -97,8 +105,8 @@ $(document).ready(() => {
       url: confirmCityURL,
       method: 'GET'
     }).then(response => {
-      cities.push(response.name);
-      localStorage.setItem('cities', JSON.stringify(cities));
+      citiesArray.push(response.name);
+      localStorage.setItem('citiesArray', JSON.stringify(citiesArray));
       $('.form-control').val('')
       createButtons();
     });
@@ -106,12 +114,12 @@ $(document).ready(() => {
 
   $('.btn-group-vertical').on('click', function(event) {
     populateData($(event.target).data('city'));
-    localStorage.setItem('last', $(event.target).data('city'));
+    localStorage.setItem('lastCity', $(event.target).data('city'));
   });
 
   $('#clear').on('click', () => {
-    cities = [];
-    localStorage.setItem('cities', JSON.stringify(cities));
+    citiesArray = [];
+    localStorage.setItem('citiesArray', JSON.stringify(citiesArray));
     createButtons();
   });
 
