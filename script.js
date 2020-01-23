@@ -4,6 +4,10 @@ $(document).ready(() => {
 
   const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
 
+  const ktof = k => {
+    return Math.floor(( k - 273.15 ) * 9 / 5 + 32);
+  }
+
   const createButtons = () => {
     $('.btn-group-vertical').empty();
     for (let i = 0; i < cities.length; i++) {
@@ -15,30 +19,9 @@ $(document).ready(() => {
     }
   }
 
-  const ktof = k => {
-    return Math.floor(( k - 273.15 ) * 9 / 5 + 32);
-  }
-
-  $('#search').on('click', event => {
-    const citySearch = $('.form-control').val();
-    const confirmCityURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearch + '&appid=' + apikey;
-
-    event.preventDefault();
-
-    $.ajax({
-      url: confirmCityURL,
-      method: 'GET'
-    }).then(response => {
-      cities.push(response.name);
-      localStorage.setItem('cities', JSON.stringify(cities));
-      $('.form-control').val('')
-      createButtons();
-    });
-  });
-
-  $('.btn-group-vertical').on('click', function(event) {
-    const city = $(event.target).data('city');
+  const populateData = city => {
     const currentWeatherURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apikey;
+    const fiveDayURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apikey;
 
     $.ajax({
       url: currentWeatherURL,
@@ -83,8 +66,6 @@ $(document).ready(() => {
       });
     });
 
-    const fiveDayURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apikey;
-
     $.ajax({
       url: fiveDayURL,
       method: 'GET'
@@ -100,6 +81,27 @@ $(document).ready(() => {
         $(currentForecastCard).append(forecastIcon, forecastTemp, forecastHumidity);
       }
     });
+  }
+
+  $('#search').on('click', event => {
+    const citySearch = $('.form-control').val();
+    const confirmCityURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + citySearch + '&appid=' + apikey;
+
+    event.preventDefault();
+
+    $.ajax({
+      url: confirmCityURL,
+      method: 'GET'
+    }).then(response => {
+      cities.push(response.name);
+      localStorage.setItem('cities', JSON.stringify(cities));
+      $('.form-control').val('')
+      createButtons();
+    });
+  });
+
+  $('.btn-group-vertical').on('click', function(event) {
+    populateData($(event.target).data('city'));
   });
 
   $('#clear').on('click', () => {
