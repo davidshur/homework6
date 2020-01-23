@@ -1,6 +1,7 @@
 $(document).ready(() => {
   let cities = [];
   cities = JSON.parse(localStorage.getItem('cities'));
+  let lastCity = localStorage.getItem('last');
 
   const apikey = 'e5a72ff6461bc3ca58398ebb5e18bda3';
 
@@ -105,6 +106,7 @@ $(document).ready(() => {
 
   $('.btn-group-vertical').on('click', function(event) {
     populateData($(event.target).data('city'));
+    localStorage.setItem('last', $(event.target).data('city'));
   });
 
   $('#clear').on('click', () => {
@@ -114,4 +116,5 @@ $(document).ready(() => {
   });
 
   createButtons();
+  populateData(lastCity);
 });
