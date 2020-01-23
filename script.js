@@ -21,7 +21,6 @@ $(document).ready(() => {
 
   const populateData = city => {
     const currentWeatherURL = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apikey;
-    const fiveDayURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apikey;
 
     $.ajax({
       url: currentWeatherURL,
@@ -66,10 +65,13 @@ $(document).ready(() => {
       });
     });
 
+    const fiveDayURL = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + '&appid=' + apikey;
+
     $.ajax({
       url: fiveDayURL,
       method: 'GET'
     }).then(response => {
+      $('')
       for (let i = 0; i < 5; i++) {
         const forecastIcon = $('<img>');
         const forecastIconURL = 'https://openweathermap.org/img/w/' + response.list[i].weather[0].icon + '.png';
@@ -78,6 +80,7 @@ $(document).ready(() => {
         const forecastTemp = $('<p>').text('Temperature: ' + ktof(response.list[i].main.temp) + ' F');
         const forecastHumidity = $('<p>').text('Humidity: ' + response.list[i].main.humidity + ' %');
         const currentForecastCard = '#' + i;
+        $(currentForecastCard).empty();
         $(currentForecastCard).append(forecastIcon, forecastTemp, forecastHumidity);
       }
     });
